@@ -114,7 +114,7 @@ function installIPC() {
   safeHandler('dock:view', view => { if(!['home','widget'].includes(view))throw new Error('无效视图'); currentDock.view=view;place();expand(true);return {...currentDock}; });
   safeHandler('app:quit', () => { setTimeout(() => app.quit(), 50); });
   safeHandler('backup:export', async () => {
-    const result = await dialog.showSaveDialog(win, { title: '导出工作区（含截图）', defaultPath: `Flowline-${new Date().toISOString().slice(0,10)}.flowline`, filters: [{ name: 'Flowline 备份', extensions: ['flowline'] }] });
+    const result = await dialog.showSaveDialog(win, { title: '导出工作区（含截图）', defaultPath: `Flowline-${new Date().toISOString().slice(0,10)}.flowline`, filters: [{ name: '任务助手备份', extensions: ['flowline'] }] });
     if (result.canceled) return null;
     const state = store.snapshot(); const images = {};
     for (const t of state.tasks) for (const n of t.nodes) if (n.image && !images[n.image]) images[n.image] = (await fs.readFile(assetPath(n.image))).toString('base64');
@@ -122,11 +122,11 @@ function installIPC() {
     return result.filePath;
   });
   safeHandler('backup:import', async () => {
-    const result = await dialog.showOpenDialog(win, { title: '导入 Flowline 备份', properties: ['openFile'], filters: [{ name: 'Flowline 备份', extensions: ['flowline'] }] });
+    const result = await dialog.showOpenDialog(win, { title: '导入 任务助手备份', properties: ['openFile'], filters: [{ name: '任务助手备份', extensions: ['flowline'] }] });
     if (result.canceled) return null;
     const stat = await fs.stat(result.filePaths[0]); if (stat.size > 200 * 1024 * 1024) throw new Error('备份超过 200 MB，请拆分后导入');
     const bundle = JSON.parse(await fs.readFile(result.filePaths[0], 'utf8'));
-    if (bundle.format !== 'flowline-backup') throw new Error('不是 Flowline 备份');
+    if (bundle.format !== 'flowline-backup') throw new Error('不是 任务助手备份');
     const state = validateState(bundle.state);
     const decoded = new Map();
     for (const t of state.tasks) for (const n of t.nodes) if (n.image && !decoded.has(n.image)) {
@@ -147,15 +147,15 @@ function installIPC() {
 async function boot() {
   store = new Store(dataDirectory); await store.init();
   win = new BrowserWindow({ width: 448, height: 800, show: false, frame: false, transparent: true, resizable: false,
-    skipTaskbar: true, alwaysOnTop: true, hasShadow: false, backgroundColor: '#00000000', title: 'Flowline · 流线', icon:path.resolve(__dirname,'../assets/icon.png'),
+    skipTaskbar: true, alwaysOnTop: true, hasShadow: false, backgroundColor: '#00000000', title: '多线程任务助手', icon:path.resolve(__dirname,'../assets/icon.png'),
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, spellcheck: false } });
   win.setMenu(null); win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', event => event.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
   installIPC(); place(); await win.loadFile(rendererFile); expand();
   const icon = nativeImage.createFromPath(path.resolve(__dirname,'../assets/icon.png')).resize({width:20,height:20});
-  tray = new Tray(icon); tray.setToolTip('Flowline · 流线');
-  tray.setContextMenu(Menu.buildFromTemplate([{ label: '展开流线', click: () => expand(true) }, { label: '收起', click: collapse }, { type: 'separator' }, { label: '退出', click: () => app.quit() }]));
+  tray = new Tray(icon); tray.setToolTip('多线程任务助手');
+  tray.setContextMenu(Menu.buildFromTemplate([{ label: '展开任务助手', click: () => expand(true) }, { label: '收起', click: collapse }, { type: 'separator' }, { label: '退出', click: () => app.quit() }]));
   tray.on('click', () => expand(true));
   const registered = globalShortcut.register('CommandOrControl+Shift+Space', () => expanded && !held ? collapse() : expand(true));
   if (!registered) store.warning = '快捷键被其他程序占用；仍可通过屏幕边缘或托盘打开。';
@@ -164,7 +164,7 @@ async function boot() {
   app.on('second-instance', () => expand(true));
 }
 if (!app.requestSingleInstanceLock()) app.quit();
-else app.whenReady().then(boot).catch(error => { dialog.showErrorBox('Flowline 启动失败', `${error.message}\n\n数据目录：${dataDirectory}`); app.quit(); });
+else app.whenReady().then(boot).catch(error => { dialog.showErrorBox('多线程任务助手启动失败', `${error.message}\n\n数据目录：${dataDirectory}`); app.quit(); });
 app.on('window-all-closed', () => app.quit());
 let finishing = false;
 app.on('before-quit', event => { if (!finishing && store) { event.preventDefault(); finishing = true; store.queue.finally(() => app.quit()); } });

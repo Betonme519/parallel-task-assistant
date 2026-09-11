@@ -1,8 +1,8 @@
 {
   "name": "flowline-desktop",
-  "productName": "Flowline",
+  "productName": "多线程任务助手",
   "version": "1.0.0",
-  "description": "A quiet home for parallel work. Local-first desktop timelines.",
+  "description": "Desktop assistant for parallel tasks, multi-stage workflows, and waiting items.",
   "private": true,
   "main": "src/main/index.cjs",
   "scripts": {

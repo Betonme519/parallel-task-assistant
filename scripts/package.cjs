@@ -12,8 +12,8 @@ const path = require('node:path');
     asar: true, overwrite: false, prune: true,
     ignore: file => file !== '' && file !== '/' && !/^(?:\/(?:src|node_modules)(?:\/|$)|\/package\.json$)/.test(file),
     win32metadata: {
-      CompanyName: 'Flowline', FileDescription: 'Flowline · 流线',
-      ProductName: 'Flowline', InternalName: 'Flowline'
+      CompanyName: 'Flowline', FileDescription: '多线程任务助手',
+      ProductName: '多线程任务助手', InternalName: 'Flowline'
     }
   });
   console.log('Clean release created:', result);
