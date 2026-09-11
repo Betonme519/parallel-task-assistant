@@ -1,0 +1,15 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');
+const {applyCommand,emptyState,validateState}=require('../src/core/model.cjs');
+const steps=Array.from({length:18},(_,i)=>`步骤 ${i+1}`);
+const make=()=>applyCommand(emptyState(),{type:'create',title:'审批流程',steps,currentStep:5});
+test('18 planned steps survive validation and current step is explicit',()=>{const s=make();assert.equal(s.tasks[0].workflow.steps.length,18);assert.equal(s.tasks[0].workflow.current,5);assert.equal(validateState(s).tasks[0].workflow.current,5);});
+test('advance records history and moves only one step',()=>{let s=make();const id=s.tasks[0].id;s=applyCommand(s,{type:'advance',taskId:id});assert.equal(s.tasks[0].workflow.current,6);assert.equal(s.tasks[0].nodes.at(-1).title,'步骤 7');});
+test('final step completes task and cannot be advanced again',()=>{let s=applyCommand(emptyState(),{type:'create',title:'x',steps:['a','b'],currentStep:1});const taskId=s.tasks[0].id;s=applyCommand(s,{type:'advance',taskId});assert.equal(s.tasks[0].status,'done');assert.equal(s.tasks[0].workflow.current,2);assert.throws(()=>applyCommand(s,{type:'advance',taskId}));});
+test('bad current index and more than 100 steps rejected',()=>{assert.throws(()=>applyCommand(emptyState(),{type:'create',title:'x',steps,currentStep:99}));assert.throws(()=>applyCommand(emptyState(),{type:'create',title:'x',steps:Array(101).fill('a')}));});
+test('legacy tasks load without invented plan',()=>{const s=applyCommand(emptyState(),{type:'create',title:'legacy'});assert.equal(validateState(s).tasks[0].workflow,null);});
+test('renaming plan preserves existing step IDs when title matches',()=>{const s=make(),task=s.tasks[0],id=task.workflow.steps[3].id;const n=applyCommand(s,{type:'edit',taskId:task.id,title:task.title,color:task.color,status:task.status,steps:[...steps,'归档'],currentStep:5});assert.equal(n.tasks[0].workflow.steps[3].id,id);assert.equal(n.tasks[0].workflow.steps.length,19);});
+test('manual progress selection and completion align state',()=>{let s=make(),taskId=s.tasks[0].id;s=applyCommand(s,{type:'append',taskId,title:'收到财务回应',currentStep:7});assert.equal(s.tasks[0].workflow.current,7);s=applyCommand(s,{type:'append',taskId,title:'全部结束',status:'done'});assert.equal(s.tasks[0].workflow.current,18);});
+
+test('explicit first node and next step are included in a supplied plan',()=>{const t=applyCommand(emptyState(),{type:'create',title:'申请',nodeTitle:'等待老师回复',nextStep:'了解标准',steps:['准备资料']}).tasks[0];assert.deepEqual(t.workflow.steps.map(s=>s.title),['等待老师回复','了解标准','准备资料']);assert.equal(t.workflow.current,0);});
+test('blank initial node derives from selected step rather than inventing a title',()=>{const t=applyCommand(emptyState(),{type:'create',title:'申请',nodeTitle:'',steps:['等待回复','准备资料'],currentStep:0}).tasks[0];assert.equal(t.nodes[0].title,'等待回复');assert.equal(t.workflow.steps.length,2);});
+test('already listed first and next steps are not duplicated',()=>{const t=applyCommand(emptyState(),{type:'create',title:'申请',nodeTitle:'等待回复',nextStep:'准备资料',steps:['等待回复','准备资料']}).tasks[0];assert.equal(t.workflow.steps.length,2);});

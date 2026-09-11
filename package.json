@@ -1,0 +1,22 @@
+{
+  "name": "flowline-desktop",
+  "productName": "Flowline",
+  "version": "1.0.0",
+  "description": "A quiet home for parallel work. Local-first desktop timelines.",
+  "private": true,
+  "main": "src/main/index.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "test:e2e": "node tests/simple-flow-ui.cjs",
+    "check:privacy": "node scripts/privacy-check.cjs",
+    "check": "node scripts/check.cjs",
+    "package": "node scripts/package.cjs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "electron": "44.2.0",
+    "playwright": "1.58.2"
+  }
+}

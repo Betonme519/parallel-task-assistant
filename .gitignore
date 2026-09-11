@@ -1,0 +1,25 @@
+node_modules/
+release/
+data/
+work/
+*.log
+
+release-v2/
+**/ai-credentials.json
+
+# Local secrets, personal data, and private verification artifacts
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.flowline
+workspace*.json*
+docs/verification/
+release-public/
+open-source/
+.npmrc
+.DS_Store
+Thumbs.db

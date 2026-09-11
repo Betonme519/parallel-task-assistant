@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Flowline · 流线</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./widget.css">
+  <link rel="stylesheet" href="./reel.css">
+</head>
+<body data-side="right" data-view="widget">
+  <section id="widget" class="widget" aria-label="桌边时间线挂件"><div class="widget-toolbar"><button id="widget-home" class="widget-home" aria-label="打开主页" title="打开主页"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button><button id="pin" class="widget-home" title="保持展开" aria-label="保持展开" aria-pressed="false"></button></div><div id="widget-content"></div><div class="widget-create"><div id="widget-create-menu" class="widget-create-menu" hidden><button id="widget-create-manual">手动输入</button><button id="widget-create-image">截图识别<small>识别任务 · 建议步骤</small></button></div><button id="widget-create" aria-expanded="false" aria-controls="widget-create-menu">＋ 新建任务</button></div></section>
+  <button id="edge-handle" tabindex="-1" aria-label="展开流线"><span></span><span></span><span></span></button>
+  <main id="shell" class="shell" aria-label="Flowline 工作时间线">
+    <header class="topbar">
+      <div class="brand">任务</div>
+      <div class="toolbar">
+        <button id="settings" class="icon-button" title="设置" aria-label="设置"></button>
+        <button id="collapse" class="icon-button" title="收起到屏幕边缘" aria-label="收起到屏幕边缘"></button>
+      </div>
+    </header>
+    <nav class="view-tabs" aria-label="任务筛选">
+      <button data-filter="active" class="selected">进行中 <span id="active-count">0</span></button>
+      <button data-filter="done">已完成 <span id="done-count">0</span></button>
+    </nav>
+    <section id="stage" class="stage" aria-label="任务时间线"></section>
+    <nav id="carousel-nav" class="carousel-nav" aria-label="切换任务"></nav>
+    <footer class="footer">
+      <button id="new-task" class="primary record-button"><span>＋</span> 新建任务</button>
+      <div class="footer-meta"><button id="undo" class="quiet" disabled>撤销</button></div>
+    </footer>
+    <div id="drop-overlay" class="drop-overlay" hidden>
+      <div class="drop-heading">添加截图</div>
+      <div class="drop-zone" data-drop="create"><span class="drop-symbol">＋</span><strong>新建任务</strong></div>
+      <div class="drop-zone" data-drop="append"><span class="drop-symbol">↳</span><strong>更新任务</strong><p id="drop-task-label">先创建一条时间线</p></div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </main>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
