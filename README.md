@@ -2,11 +2,23 @@
 
 **跨天流程管理与等待事项跟进。**
 
-![多线程任务助手宣传图：跨天流程管理与等待事项跟进](docs/assets/promo.png)
+![多线程任务助手：多项工作，从容推进](docs/assets/promo-hero-v2.png)
 
-*功能概念示意，非软件界面截图。*
+*基于实际软件截图制作的宣传图；以下附原始界面截图。*
 
 把一件事的阶段、当前进展和下一步串在一起，让等待中的任务也能留在视野里。
+
+## 桌面上的实际形态
+
+![桌面右侧挂件使用场景](docs/assets/promo-desktop-v2.png)
+
+*桌面场景为合成展示。以下为应用直接截取的真实界面，使用虚构演示任务。*
+
+<p align="center">
+  <img src="docs/assets/screenshot-home.png" alt="真实任务管理面板截图" width="360">
+  &nbsp;&nbsp;
+  <img src="docs/assets/screenshot-widget.png" alt="真实桌边时间线挂件截图" width="190">
+</p>
 
 ## 为什么做多线程任务助手
 
