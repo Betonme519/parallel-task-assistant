@@ -1,4 +1,5 @@
 @echo off
+rem Launch a built portable app; npm run package creates the public build.
 cd /d "%~dp0"
 if exist "release-public\Flowline-win32-x64\Flowline.exe" (
   start "" "release-public\Flowline-win32-x64\Flowline.exe"
