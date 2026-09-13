@@ -197,3 +197,9 @@ npm run check:privacy  # Git 发布候选文件的启发式隐私扫描
 ## 开源许可
 
 本项目使用 [MIT License](LICENSE)。
+
+## 文件导航
+
+[源码结构](src/README.md) · [工具脚本](scripts/README.md) · [测试入口](tests/README.md)
+
+开发与便携版启动入口分别为 `START-DEV.cmd` 和 `START.cmd`；首次运行及构建步骤见上方快速开始。
