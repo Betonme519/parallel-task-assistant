@@ -41,3 +41,7 @@ git diff --cached --stat
 在原始 Git 工作区的 Flowline 目录执行 `node scripts/export-source.cjs`。脚本先检查候选文件，再导出到 `open-source/Flowline/`，不复制 Git 历史、被忽略的数据或便携版。输出目录已存在时拒绝覆盖。
 
 该目录可作为新 GitHub 仓库根目录。导出后不要在里面配置个人凭据或放入真实任务截图再整体上传。扫描与导出工具需要在 Git 工作区中运行。
+
+## 反馈与凭据
+
+问题反馈只提供脱敏信息，不要在 Issue 中粘贴 API 请求的认证头。密钥配置功能的源码可以公开，但用户实际保存的凭据文件不能公开。
