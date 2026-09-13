@@ -23,3 +23,5 @@ open-source/
 .npmrc
 .DS_Store
 Thumbs.db
+
+# Public source excludes local workspaces, credentials, and used portable builds.
