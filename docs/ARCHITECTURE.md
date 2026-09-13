@@ -54,3 +54,7 @@
 - 手动推进支持不同类型的个人流程，同时无法自动获知外部事件。
 - Electron 便于复用 Web 界面与桌面 API，同时带来完整运行时的体积成本。
 - 当前主要验证 Windows 桌面路径，其他系统尚未作为发布目标。
+
+## 阅读顺序
+
+理解业务流程可从 `core/workflow.cjs` 和 `core/model.cjs` 开始；关注数据可靠性可阅读 `main/store.cjs`；桌面集成和进程边界位于 `main/index.cjs` 与 `main/preload.cjs`。
